@@ -26,6 +26,7 @@ class GCPStorage(GCPAuth):
     def create_bucket(self, bucket_name: str):
         """
         Create a new bucket in the Mumbai [Asia] region
+        Documentation: https://cloud.google.com/storage/docs/creating-buckets
 
         Args:
             bucket_name (str): The name of bucket.
@@ -38,7 +39,6 @@ class GCPStorage(GCPAuth):
             bucket.storage_class = "STANDARD"
             bucket.location = "ASIA-SOUTH1"
             bucket.create()
-            # print(f"Bucket '{bucket_name}' created successfully.")
             print(
                 f"Created bucket {bucket.name} in {bucket.location} with storage class {bucket.storage_class}"
             )
@@ -48,6 +48,7 @@ class GCPStorage(GCPAuth):
     def list_buckets(self):
         """
         Lists all buckets in the authenticated project.
+        Documentation: https://cloud.google.com/storage/docs/listing-buckets
         """
         if not self.storage_client:
             print("Cannot list buckets. Authentication failed.")
@@ -58,14 +59,43 @@ class GCPStorage(GCPAuth):
             buckets = self.storage_client.list_buckets()
             for bucket in buckets:
                 print(f"- {bucket.name}")
-                blobs = self.storage_client.list_blobs(bucket)
-                for blob in blobs:
-                    print(f"    - {blob.name}")
         except Exception as e:
             print(f"An error occurred while listing buckets: {e}")
 
-    def read_bucket(self):
+    def list_objects(self, bucket_name: str):
+        """
+        Lists all objects present inside bucket
+        """
+        if not self.storage_client:
+            print("Cannot list buckets. Authentication failed.")
+            return
+        try:
+            blobs = self.storage_client.list_blobs(bucket_name)
+            print(blobs.num_results)
+            print(blobs.__sizeof__())
+            print(blobs.max_results)
+
+            #     for blob in blobs:
+            #         print(f"    - {blob.name}")
+        except Exception as e:
+            print(f"An error occurred while listing buckets: {e}")
+
+    def read_blob(self):
         """
         Read the specified object
         """
         pass
+
+    def get_bucket(self, bucket_name=None):
+        """
+        Return the specified bucket
+        Documentation: https://cloud.google.com/storage/docs/bucket-metadata
+        """
+        if not self.storage_client:
+            print("Cannot list buckets. Authentication failed.")
+            return
+        if not bucket_name:
+            print("Bucket Name cannnot be empty")
+        else:
+            bucket = self.storage_client.get_bucket(bucket_name)
+            return f"Fetched bucket: {bucket.name}, location: {bucket.location}, time created: {bucket.time_created}"

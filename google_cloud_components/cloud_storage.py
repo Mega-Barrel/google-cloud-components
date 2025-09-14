@@ -69,7 +69,12 @@ class GCPStorage(GCPAuth):
             "labels": bucket.labels
         }
 
-    def create_bucket(self, bucket_name: str, location: str = "ASIA-SOUTH1", storage_class: str = "STANDARD"):
+    def create_bucket(
+        self,
+        bucket_name: str,
+        location: str = "ASIA-SOUTH1",
+        storage_class: str = "STANDARD"
+    ):
         """
         Create a new bucket with optional location and storage class.
 

@@ -1,4 +1,5 @@
-
+""" Entry point for google_cloud_components package"""
+import json
 from google_cloud_components.cloud_storage import GCPStorage
 
 if __name__ == "__main__":
@@ -7,9 +8,19 @@ if __name__ == "__main__":
         print("Exiting as authentication failed.")
     else:
         BUCKET_NAME = "udemy-cource"
-        storage_ob.list_blobs(bucket_name=BUCKET_NAME)
-        # bucket_metadata = storage_ob.get_bucket_metadata(bucket_name=BUCKET_NAME)
-        # print(bucket_metadata)
+        BLOB_NAME = "json/2019-04-28.json"
 
-        blob_metadata = storage_ob.get_blob_metadata(bucket_name=BUCKET_NAME, blob_name='csv/2019-04-27.csv')
-        print(blob_metadata)
+        # storage_ob.list_blobs(bucket_name=BUCKET_NAME)
+        # json_data = storage_ob.read_blob_content(bucket_name=BUCKET_NAME, blob_name=BLOB_NAME)
+
+        # parsed_data = []
+        # for line in json_data.strip().splitlines():
+        #     if line:
+        #         try:
+        #             parsed_data.append(json.loads(line))
+        #         except json.JSONDecodeError as e:
+        #             # Continue to the next line to process the rest of the file
+        #             pass
+        # # Return the list of parsed JSON objects.
+        # print(type(json_data))
+        # print(parsed_data)
